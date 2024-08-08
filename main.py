@@ -44,8 +44,11 @@ if uploaded_file is not None:
     )
     texts = text_splitter.split_documents(pages)
 
+    # Streamlit secrets에서 OpenAI API 키 가져오기
+    openai_api_key = st.secrets["openai_api_key"]
+
     # 임베딩 생성
-    embeddings_model = OpenAIEmbeddings()
+    embeddings_model = OpenAIEmbeddings(openai_api_key=openai_api_key)
 
     # Chroma 데이터베이스에 저장
     with tempfile.TemporaryDirectory() as temp_dir:
