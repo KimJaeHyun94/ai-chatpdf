@@ -3,13 +3,11 @@ __import__('pysqlite3')
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain.chroma import Chroma
-from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
-from langchain.retrievers.multi_query import MultiQueryRetriever
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.vectorstores import Chroma
+from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chains import RetrievalQA
-from langchain.embeddings import OpenAIEmbeddings
-from langchain_openai import ChatOpenAI
+from langchain.chat_models import ChatOpenAI
 import streamlit as st
 import tempfile
 import os
@@ -39,8 +37,7 @@ if uploaded_file is not None:
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size = 300,
         chunk_overlap = 20,
-        length_function = len,
-        is_separator_regex = False,
+        length_function = len
     )
     texts = text_splitter.split_documents(pages)
 
