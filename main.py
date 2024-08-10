@@ -8,9 +8,13 @@ from langchain.vectorstores import Chroma
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
+from streamlit_extras.buy_me_a_coffee import button
+
 import streamlit as st
 import tempfile
 import os
+
+button(username="ru6300", floating=True, width=221)
 
 # 제목
 st.title("ChatPDF")
@@ -57,7 +61,7 @@ if uploaded_file is not None:
 
         if st.button('질문하기'):
             with st.spinner('잠시만 기다려 주세요...'):
-                llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0,  openai_api_key=openai_key)
+                llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0,  openai_api_key=openai_key, streaming=True, callbacks=[stream_hander])
                 qa_chain = RetrievalQA.from_chain_type(llm, retriever=db.as_retriever())
                 result = qa_chain({"query": question})
                 st.write(result["result"])
